@@ -115,10 +115,12 @@ func Charopt(statline []int, class string, race string, dex bool) (optimised Cha
 	} else if !raceerr {
 		fmt.Println(race, "is not a valid race option. Please check --races")
 	}
-	if race == "variant human" || (race == "half elf" && dist[5] != 5) {
-		optimised.setstats(statline[0:6], dist[0:6], bonus[0:6], 5, 4)
-	} else if race == "half elf" {
+	if race == "variant human" || (race == "half elf" && dist[5] == 5) {
 		optimised.setstats(statline[0:6], dist[0:6], bonus[0:6], 4, 3)
+	} else if race == "half elf" && dist[5] == 4 {
+		optimised.setstats(statline[0:6], dist[0:6], bonus[0:6], 5, 3)
+	} else if race == "half elf" {
+		optimised.setstats(statline[0:6], dist[0:6], bonus[0:6], 5, 4)
 	} else {
 		optimised.setstats(statline[0:6], dist[0:6], bonus[0:6], -1, -1)
 	}
@@ -126,8 +128,8 @@ func Charopt(statline []int, class string, race string, dex bool) (optimised Cha
 }
 
 func (opt *Character) setstats(statline []int, dist []int, bonus []int, first int, second int) {
-	for i := 0; i < 6; {
-		if i == first || i == second {
+	for i := 0; i < 6; i++ {
+		if dist[i] == first || dist[i] == second {
 			bonus[i] = 1
 		}
 		opt.stats[i] = statline[dist[i]] + bonus[i] //TODO: Add Even/Odd Checker
