@@ -20,6 +20,10 @@ func (c Character) String() string { //weird behaviour with "Ra" being " ,"
 }
 
 func main() { //TODO: argpass for --help --races --classes
+	if len(os.Args) > 1 && os.Args[1] == "--races" {
+		fmt.Println(raceshelp)
+		return
+	}
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Print("Enter Race (as 'High Elf'): ")
 	race, _ := reader.ReadString('\n')
@@ -32,24 +36,20 @@ func main() { //TODO: argpass for --help --races --classes
 	n, err := fmt.Fscanf(os.Stdin, "%d %d %d %d %d %d", &statline[0], &statline[1], &statline[2], &statline[3], &statline[4], &statline[5])
 	if err != nil {
 		fmt.Println("An unknown Error has occurred while reading from Terminal. Exiting.")
-		fmt.Fscan(os.Stdin)
 		return
 	}
 	if n < 6 {
 		fmt.Printf("Not enough arguments, expected 6, got %d. Exiting.\n", n)
-		fmt.Fscan(os.Stdin)
 		return
 	}
 	fmt.Println("Converted Input. Optimising....")
 	optimised, err := charopt(statline[0:6], class, race)
 	if err != nil {
 		fmt.Println(err)
-		fmt.Fscan(os.Stdin)
 		return
 	}
 	fmt.Println("Optimised. Here is your Character:")
 	fmt.Println(optimised)
-	fmt.Fscan(os.Stdin)
 	return
 }
 
@@ -95,7 +95,7 @@ func bonus(race string) (bonus [6]int, err error) {
 		bonus = [6]int{0, 2, 0, 0, 0, 1}
 	case "sea elf":
 		bonus = [6]int{0, 2, 1, 0, 0, 0}
-	case "shadar-kai":
+	case "shadar kai":
 		bonus = [6]int{0, 2, 1, 0, 0, 0}
 	case "lightfoot halfling":
 		bonus = [6]int{0, 2, 0, 0, 0, 1}
@@ -165,7 +165,7 @@ func bonus(race string) (bonus [6]int, err error) {
 		bonus = [6]int{-2, 2, 0, 0, 0, 0}
 	case "orc":
 		bonus = [6]int{2, 0, 1, 0, 0, 0}
-	case "yuan-ti pureblood":
+	case "yuan ti pureblood":
 		bonus = [6]int{0, 0, 0, 1, 0, 2}
 	case "githyanki":
 		bonus = [6]int{2, 0, 0, 1, 0, 0}
@@ -177,3 +177,5 @@ func bonus(race string) (bonus [6]int, err error) {
 	}
 	return bonus, err
 }
+
+const raceshelp = "Supported races:\nHill Dwarf (+2 Con, +1 Wis, p. 18-20 PHB)\nMountain Dwarf (+2 Str, +2 Con, p. 18-20 PHB)\nDuergar (+1 Str, +2 Con, p. 81 MTF)\nHigh Elf (+2 Dex, +1 Int, p. 21-24 PHB)\nWood Elf (+2 Dex, +1 Wis, p. 21-24 PHB)\nDrow Elf (+2 Dex, +1 Cha, p. 21-24 PHB)\nEladrin (+2 Dex, +1 Cha, p. p. 61f MTF)\nSea Elf (+2 Dex, +1 Con, p. 62 MTF)\nShadar Kai (+2 Dex, +1 Con, p. 62f MTF)\nLightfoot Halfling (+2 Dex, +1 Cha, p. 26-28 PHB)\nStout Halfling (+2 Dex, +1 Con, p. 26-28 PHB)\nStandard Human (+1 to All, p. 29-31 PHB)\nDragonborn (+2 Str, +1 Cha, p. 32-34 PHB)\nForest Gnome (+1 Dex, +2 Int, p. 35-37 PHB)\nRock Gnome (+1 Con, +2 Int, p. 35-37 PHB)\nDeep Gnome (+1 Dex, +2 Int, p. 113f MTF)\nHalf Orc (+2 Str, +1 Con, p. 40f PHB)\nTiefling (+1 Int, +2 Cha, p.42f PHB)\nAsmodeus Tiefling (+1 Int, +2 Cha, p. 21 MTF)\nBaalzebul Tiefling (+1 Int, +2 Cha, p. 21 MTF)\nDispater Tiefling (+1 Dex, +2 Cha, p. 21 MTF)\nFierna Tiefling (+1 Wis, +2 Cha, p. 21f MTF)\nGlasya Tiefling (+1 Dex, +2 Cha, p. 22 MTF)\nLevistus Tiefling (+1 Con, +2 Cha, p. 22 MTF)\nMammon Tiefling (+1 Int, +2 Cha, p. 22 MTF)\nMephistopheles Tiefling (+1 Int, +2 Cha, p. 23 MTF)\nZariel Tiefling (+1 Str, +2 Cha, p. 23 MTF)\nProtector Aasimar (+1 Wis, +2 Cha, p. 104f Volos)\nScourge Aasimar (+1 Con, +2 Cha, p. 104f Volos)\nFallen Aasimar (+1 Str, +2 Cha, p. 104f Volos)\nFirbolg (+1 Str, +2 Wis, p. 106f Volos)\nGoliath (+2 Str, +1 Con, p. 108f Volos)\nKenku (+2 Dex, +1 Wis, p. 109-111 Volos)\nLizardfolk (+2 Con, +1 Wis, p. 111-113 Volos)\nTabaxi (+2 Dex, +1 Cha, p. 113-115 Volos)\nTriton (+2 Dex, +1 Int, p. 115-118 Volos)\nBugbear (+2 Str, +1 Dex, p. 119 Volos)\nGoblin (+2 Dex, +1 Con, p. 119 Volos)\nHobgoblin (+2 Con, +1 Int, p. 119 Volos)\nKobold (-2 Str, +2 Dex, p. 119 Volos)\nOrc (+2 Str, +1 Con, p. 120 Volos)\nYuan Ti Pureblood (+1 Int, +2 Cha, p. 120 Volos)\nGithyanki (+2 Str, +1 Int, p. 96 MTF)\nGithzerai (+1 Int, +2 Wis, p. 96 MTF)"
