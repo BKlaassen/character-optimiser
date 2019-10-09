@@ -8,4 +8,4 @@ For a detailed list of races see --races. Similarly for a full list of supported
 
 Installation Instructions:
 Make sure you have golang installed (https://golang.org/)
-then navigate to the folder and either go build ./5eoptimiser.go or go run ./5eoptimiser.go
+then navigate to the folder and either `go build ./5eoptimiser.go` or `go run ./5eoptimiser.go`
